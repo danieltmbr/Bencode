@@ -1,12 +1,5 @@
 # Bencode
 
-[![CI Status](http://img.shields.io/travis/acct<blob>=<NULL>/Bencode.svg?style=flat)](https://travis-ci.org/acct<blob>=<NULL>/Bencode)
-[![Version](https://img.shields.io/cocoapods/v/Bencode.svg?style=flat)](http://cocoapods.org/pods/Bencode)
-[![License](https://img.shields.io/cocoapods/l/Bencode.svg?style=flat)](http://cocoapods.org/pods/Bencode)
-[![Platform](https://img.shields.io/cocoapods/p/Bencode.svg?style=flat)](http://cocoapods.org/pods/Bencode)
-
-# Bencode
-
 Bencode is a general purpose bencode encoder & decoder written in swift 4.
 
 Inspired by [VFK SwiftyBencode][vfk] & [arvidsigvardsson/Bencode][abc]
