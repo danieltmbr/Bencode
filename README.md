@@ -13,6 +13,8 @@ Inspired by [VFK SwiftyBencode][vfk] & [arvidsigvardsson/Bencode][abc]
 
 ## Installation
 
+**⚠️ Xcode 9 is required ⚠️**
+
 Bencode is available through [CocoaPods](http://cocoapods.org).
 To install it, simply add the following line to your Podfile:
 

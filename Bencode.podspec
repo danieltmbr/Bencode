@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Bencode'
-  s.version          = '0.9.0'
+  s.version          = '1.0.0'
   s.summary          = 'Pure swift Bencode decoder & encoder'
 
   s.description      = <<-DESC
@@ -17,6 +17,6 @@ Can be used for e.g.: decoding .torrent files.
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.10'
 
-  s.source_files = 'Bencode/Classes/**/*'
+  s.source_files = 'Source/*.swift'
 
 end
