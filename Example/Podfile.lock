@@ -1,0 +1,16 @@
+PODS:
+  - Bencode (0.9.0)
+
+DEPENDENCIES:
+  - Bencode (from `../`)
+
+EXTERNAL SOURCES:
+  Bencode:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Bencode: 0c81235013ce32d157f3c64546c83bbca520b511
+
+PODFILE CHECKSUM: a37cedfee38046a95fd006cb37799405d449e104
+
+COCOAPODS: 1.2.1

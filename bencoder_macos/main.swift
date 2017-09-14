@@ -8,7 +8,7 @@
 import Foundation
 
 let home = FileManager.default.homeDirectoryForCurrentUser
-let torrentPath = "Desktop/am.torrent"
+let torrentPath = "Desktop/et.torrent"
 let torrentUrl = home.appendingPathComponent(torrentPath)
 
 do {
@@ -22,5 +22,5 @@ catch {
 }
 
 if let bencode = Bencode(file: torrentUrl) {
-    print(bencode["info"]["files"][0]["path"][0].string!)
+    print(bencode["info"]["files"][1]["path"][1].string!)
 }

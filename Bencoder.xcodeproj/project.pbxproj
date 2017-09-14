@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		E242EBAD1F688FD3005215E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E242EBAC1F688FD3005215E3 /* main.swift */; };
 		E242EBB11F6891D8005215E3 /* Bencode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E242EBA41F688690005215E3 /* Bencode.swift */; };
-		E24E81221F695BEE002CAE72 /* BencodePrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E81211F695BEE002CAE72 /* BencodePrint.swift */; };
-		E24E81241F697603002CAE72 /* BencodeSubscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E81231F697603002CAE72 /* BencodeSubscript.swift */; };
+		E24E81221F695BEE002CAE72 /* BencodeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E81211F695BEE002CAE72 /* BencodeDescription.swift */; };
+		E24E81241F697603002CAE72 /* BencodeAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24E81231F697603002CAE72 /* BencodeAccessors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,8 +29,8 @@
 		E242EBA41F688690005215E3 /* Bencode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bencode.swift; sourceTree = "<group>"; };
 		E242EBA91F688FD3005215E3 /* bencoder_macos */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bencoder_macos; sourceTree = BUILT_PRODUCTS_DIR; };
 		E242EBAC1F688FD3005215E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		E24E81211F695BEE002CAE72 /* BencodePrint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BencodePrint.swift; sourceTree = "<group>"; };
-		E24E81231F697603002CAE72 /* BencodeSubscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BencodeSubscript.swift; sourceTree = "<group>"; };
+		E24E81211F695BEE002CAE72 /* BencodeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BencodeDescription.swift; sourceTree = "<group>"; };
+		E24E81231F697603002CAE72 /* BencodeAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BencodeAccessors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,8 +48,8 @@
 			isa = PBXGroup;
 			children = (
 				E242EBA41F688690005215E3 /* Bencode.swift */,
-				E24E81231F697603002CAE72 /* BencodeSubscript.swift */,
-				E24E81211F695BEE002CAE72 /* BencodePrint.swift */,
+				E24E81231F697603002CAE72 /* BencodeAccessors.swift */,
+				E24E81211F695BEE002CAE72 /* BencodeDescription.swift */,
 				E242EBAB1F688FD3005215E3 /* bencoder_macos */,
 				E242EBAA1F688FD3005215E3 /* Products */,
 			);
@@ -128,9 +128,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E24E81221F695BEE002CAE72 /* BencodePrint.swift in Sources */,
+				E24E81221F695BEE002CAE72 /* BencodeDescription.swift in Sources */,
 				E242EBB11F6891D8005215E3 /* Bencode.swift in Sources */,
-				E24E81241F697603002CAE72 /* BencodeSubscript.swift in Sources */,
+				E24E81241F697603002CAE72 /* BencodeAccessors.swift in Sources */,
 				E242EBAD1F688FD3005215E3 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
