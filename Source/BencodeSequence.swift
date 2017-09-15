@@ -9,25 +9,27 @@ import Foundation
 
 public struct BencodeIterator: IteratorProtocol {
     
-    public typealias Element = Bencode
+    public typealias Element = (key: String?, value: Bencode)
     
     let bencode: Bencode
+    let sortedKeys: [String]
     private var index: Int = 0
     
     init(bencode: Bencode) {
         self.bencode = bencode
+        sortedKeys = bencode.dict?.keys.sorted() ?? []
     }
     
     public mutating func next() -> Element? {
         switch bencode {
         case .list(let l) where index < l.count:
             defer { index += 1 }
-            return l[index]
+            return (key: nil, value: l[index])
         case .dictionary(let d):
-            let keys = d.keys.sorted()
-            guard index < keys.count else { return nil }
+            guard index < sortedKeys.count else { return nil }
             defer { index += 1 }
-            return d[keys[index]]
+            let key = sortedKeys[index]
+            return (key: key, value: d[key]!)
         default: return nil
         }
     }

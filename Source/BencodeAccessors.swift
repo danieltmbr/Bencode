@@ -26,6 +26,18 @@ public extension Bencode {
         return s
     }
     
+    // Accessing list
+    var list: [Bencode]? {
+        guard case .list(let l) = self else { return nil }
+        return l
+    }
+    
+    // Accessing dictionary
+    var dict: [String: Bencode]? {
+        guard case .dictionary(let d) = self else { return nil }
+        return d
+    }
+    
     // Accessing list item by index
     subscript(index: Int) -> BencodeOptional {
         guard case .list(let l) = self,
@@ -51,14 +63,22 @@ public extension BencodeOptional {
     
     // Accessing int value
     var int: Int? {
-        guard case .bencode(let b) = self else { return nil }
-        return b.int
+        return bencode?.int
     }
     
     // Accessing string value
     var string: String? {
-        guard case .bencode(let b) = self else { return nil }
-        return b.string
+        return bencode?.string
+    }
+    
+    // Accessing list
+    var list: [Bencode]? {
+        return bencode?.list
+    }
+    
+    // Accessing dictionary
+    var dict: [String: Bencode]? {
+        return bencode?.dict
     }
     
     // Accessing list item by index
