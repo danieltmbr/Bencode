@@ -14,26 +14,44 @@ public enum BencodeOptional {
 
 public extension Bencode {
     
-    // Accessing int value
+    /** Accessing int value */
     var int: Int? {
         guard case .integer(let i) = self else { return nil }
         return i
     }
     
-    // Accessing string value
+    /** Accessing string value */
     var string: String? {
         guard case .string(let s) = self else { return nil }
         return s
     }
     
-    // Accessing list item by index
+    /** Accessing list */
+    var list: [Bencode]? {
+        guard case .list(let l) = self else { return nil }
+        return l
+    }
+    
+    /** Accessing dictionary */
+    var dict: [String: Bencode]? {
+        guard case .dictionary(let d) = self else { return nil }
+        return d
+    }
+    
+    /** returns all items if bencode is a list or dictionary
+     none if its a string or integer */
+    public var values: [Bencode] {
+        return self.map { $0.value }
+    }
+    
+    /** Accessing list item by index */
     subscript(index: Int) -> BencodeOptional {
         guard case .list(let l) = self,
             index >= 0, index < l.count else { return .none }
         return .bencode(l[index])
     }
     
-    // Accessing dictionary value by key
+    /** Accessing dictionary value by key */
     subscript(key: String) -> BencodeOptional {
         guard case .dictionary(let d) = self,
             let b = d[key] else { return .none }
@@ -43,31 +61,45 @@ public extension Bencode {
 
 public extension BencodeOptional {
     
-    // Accessing bencode enum
+    /** Accessing bencode enum */
     var bencode: Bencode? {
         guard case .bencode(let b) = self else { return nil }
         return b
     }
     
-    // Accessing int value
+    /** Accessing int value */
     var int: Int? {
-        guard case .bencode(let b) = self else { return nil }
-        return b.int
+        return bencode?.int
     }
     
-    // Accessing string value
+    /** Accessing string value */
     var string: String? {
-        guard case .bencode(let b) = self else { return nil }
-        return b.string
+        return bencode?.string
     }
     
-    // Accessing list item by index
+    /** Accessing list */
+    var list: [Bencode]? {
+        return bencode?.list
+    }
+    
+    /** Accessing dictionary */
+    var dict: [String: Bencode]? {
+        return bencode?.dict
+    }
+    
+    /** Returns all items if bencode is a list or dictionary
+     none if its a string or integer */
+    public var values: [Bencode] {
+        return self.map { $0.value }
+    }
+    
+    /** Accessing list item by index */
     subscript(index: Int) -> BencodeOptional {
         guard case .bencode(let b) = self else { return .none }
         return b[index]
     }
     
-    // Accessing dictionary value by key
+    /** Accessing dictionary value by key */
     subscript(key: String) -> BencodeOptional {
         guard case .bencode(let b) = self else { return .none }
         return b[key]

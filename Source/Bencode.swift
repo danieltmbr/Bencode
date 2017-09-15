@@ -18,20 +18,20 @@ public enum Bencode {
 
 public extension Bencode {
     
-    // Decoding from Bencoded string
+    /** Decoding from Bencoded string */
     init?(bencodedString str: String) {
         guard let bencode = Bencode.parse(str)?.bencode else { return nil }
         self = bencode
     }
     
-    // Decoding bencoded file
+    /** Decoding bencoded file */
     init?(file url: URL) {
         guard let str = try? String(contentsOf: url, encoding: .ascii),
             let bencode = Bencode.parse(str)?.bencode else { return nil }
         self = bencode
     }
     
-    // Encoding to Bencode string
+    /** Encoding to Bencode string */
     var encoded: String {
         switch self {
         case .integer(let i): return "i\(i)e"

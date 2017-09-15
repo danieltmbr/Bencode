@@ -28,7 +28,14 @@ final class ViewController: NSViewController {
         guard let url = Bundle.main.url(forResource: "Entourage.S01", withExtension: "torrent"),
             let bencode = Bencode(file: url) else { return }
         
-        fileNameLabel.title = bencode["info"]["files"][1]["path"][0].string!
+        let info = bencode["info"]
+        let files = info["files"]
+
+        files.values.forEach {
+            print($0["path"][0].string!)
+        }
+        
+        fileNameLabel.title = files[1]["path"][0].string!
         fileLengthLabel.title = "\(bencode["info"]["files"][1]["length"].int!)"
         fileContentTextView.textStorage?.append(NSAttributedString(string: bencode.debugDescription))
         fileContentTextView.scroll(NSPoint(x: 0, y: 0))
