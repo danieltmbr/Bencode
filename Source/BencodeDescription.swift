@@ -9,7 +9,7 @@ import Foundation
 
 extension Bencode: CustomDebugStringConvertible {
     
-    // Pretty-ish print
+    /** Pretty-ish debug print */
     public var debugDescription: String {
         return desc(tabsCount: 0)
     }

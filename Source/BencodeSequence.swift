@@ -11,16 +11,23 @@ public struct BencodeIterator: IteratorProtocol {
     
     public typealias Element = (key: String?, value: Bencode)
     
-    let bencode: Bencode
-    let sortedKeys: [String]
+    private let bencodeOptional: BencodeOptional
+    private let sortedKeys: [String]
     private var index: Int = 0
     
+    init(bencodeOptional: BencodeOptional) {
+        self.bencodeOptional = bencodeOptional
+        sortedKeys = bencodeOptional.bencode?.dict?.keys.sorted() ?? []
+    }
+    
     init(bencode: Bencode) {
-        self.bencode = bencode
-        sortedKeys = bencode.dict?.keys.sorted() ?? []
+        self.init(bencodeOptional: .bencode(bencode))
     }
     
     public mutating func next() -> Element? {
+        guard let bencode = bencodeOptional.bencode
+            else { return nil }
+        
         switch bencode {
         case .list(let l) where index < l.count:
             defer { index += 1 }
@@ -36,10 +43,15 @@ public struct BencodeIterator: IteratorProtocol {
 }
 
 extension Bencode: Sequence {
-
-    public typealias Iterator = BencodeIterator
     
-    public func makeIterator() -> Iterator {
+    public func makeIterator() -> BencodeIterator {
         return BencodeIterator(bencode: self)
+    }
+}
+
+extension BencodeOptional: Sequence {
+    
+    public func makeIterator() -> BencodeIterator {
+        return BencodeIterator(bencodeOptional: self)
     }
 }
