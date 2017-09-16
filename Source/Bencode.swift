@@ -13,7 +13,7 @@ public enum Bencode {
     case integer(Int)
     case string(String)
     indirect case list([Bencode])
-    indirect case dictionary([String:Bencode])
+    indirect case dictionary([BencodeKey:Bencode])
 }
 
 public extension Bencode {
@@ -40,7 +40,9 @@ public extension Bencode {
             let desc = l.map { $0.encoded }.joined()
             return "l\(desc)e"
         case .dictionary(let d):
-            let desc = d.map { "\(Bencode.string($0).encoded)\($1.encoded)" }.joined()
+            let desc = d.sorted(by: { $0.key < $1.key })
+                .map { "\(Bencode.string($0.key).encoded)\($1.encoded)" }
+                .joined()
             return "d\(desc)e"
         }
     }
@@ -72,15 +74,17 @@ private extension Bencode {
             }
             return (bencode: .list(l), text: String(sfx.suffix(sfx.count-1)))
         case "d":
-            var d: [String:Bencode] = [:]
+            var d: [BencodeKey:Bencode] = [:]
             var sfx = String(s.suffix(s.count-1))
+            var order = 0
             while sfx.first != "e" {
                 guard let keyResult = parseString(sfx),
                     case .string(let key) = keyResult.bencode,
                     let valueResult = parse(keyResult.text)
                     else { return nil }
-                d[key] = valueResult.bencode
+                d[BencodeKey(key, order: order)] = valueResult.bencode
                 sfx = valueResult.text
+                order += 1
             }
             return (bencode: .dictionary(d), text: String(sfx.suffix(sfx.count-1)))
         default: return nil

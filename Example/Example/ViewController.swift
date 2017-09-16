@@ -39,6 +39,11 @@ final class ViewController: NSViewController {
         fileLengthLabel.title = "\(bencode["info"]["files"][1]["length"].int!)"
         fileContentTextView.textStorage?.append(NSAttributedString(string: bencode.debugDescription))
         fileContentTextView.scroll(NSPoint(x: 0, y: 0))
+        
+        print("\n======================================\n")
+        
+        let encodedInfo = info.encoded!
+        print(encodedInfo)
     }
 
 }

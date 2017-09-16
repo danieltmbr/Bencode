@@ -33,7 +33,7 @@ public extension Bencode {
     }
     
     /** Accessing dictionary */
-    var dict: [String: Bencode]? {
+    var dict: [BencodeKey: Bencode]? {
         guard case .dictionary(let d) = self else { return nil }
         return d
     }
@@ -54,7 +54,7 @@ public extension Bencode {
     /** Accessing dictionary value by key */
     subscript(key: String) -> BencodeOptional {
         guard case .dictionary(let d) = self,
-            let b = d[key] else { return .none }
+            let b = d[key.bKey] else { return .none }
         return .bencode(b)
     }
 }
@@ -65,6 +65,11 @@ public extension BencodeOptional {
     var bencode: Bencode? {
         guard case .bencode(let b) = self else { return nil }
         return b
+    }
+    
+    /** Accessing encoded string */
+    var encoded: String? {
+        return bencode?.encoded
     }
     
     /** Accessing int value */
@@ -83,7 +88,7 @@ public extension BencodeOptional {
     }
     
     /** Accessing dictionary */
-    var dict: [String: Bencode]? {
+    var dict: [BencodeKey: Bencode]? {
         return bencode?.dict
     }
     
