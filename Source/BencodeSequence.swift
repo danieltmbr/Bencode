@@ -12,7 +12,7 @@ public struct BencodeIterator: IteratorProtocol {
     public typealias Element = (key: String?, value: Bencode)
     
     private let bencodeOptional: BencodeOptional
-    private let sortedKeys: [String]
+    private let sortedKeys: [BencodeKey]
     private var index: Int = 0
     
     init(bencodeOptional: BencodeOptional) {
@@ -36,7 +36,7 @@ public struct BencodeIterator: IteratorProtocol {
             guard index < sortedKeys.count else { return nil }
             defer { index += 1 }
             let key = sortedKeys[index]
-            return (key: key, value: d[key]!)
+            return (key: key.key, value: d[key]!)
         default: return nil
         }
     }

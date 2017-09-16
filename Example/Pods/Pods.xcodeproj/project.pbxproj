@@ -20,6 +20,7 @@
 		D1FA2119C594CE9241129265F2A971BB /* Bencode-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C1460516284795387371B47053859BEA /* Bencode-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3076519AB0F1D58B606518161E1DF2B /* Bencode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DED9793FD0F40DB6067DE08FED775DA /* Bencode.swift */; };
 		E272E1521F6B375400A4AF13 /* BencodeSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E272E1511F6B375400A4AF13 /* BencodeSequence.swift */; };
+		E272E1721F6D7E4700A4AF13 /* BencodeKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E272E1711F6D7E4700A4AF13 /* BencodeKey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		CC35B24527535478D3634C5E02A66DA0 /* BencodeAccessors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BencodeAccessors.swift; sourceTree = "<group>"; };
 		DA005456657EE7C0632AF706162C9ACF /* Pods-ExampleTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ExampleTests-frameworks.sh"; sourceTree = "<group>"; };
 		E272E1511F6B375400A4AF13 /* BencodeSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BencodeSequence.swift; sourceTree = "<group>"; };
+		E272E1711F6D7E4700A4AF13 /* BencodeKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BencodeKey.swift; sourceTree = "<group>"; };
 		E56F7F17B55C2A8D8B6F6383700B0AA8 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0AC758F5C9BA1D326D64CC61AE07D1B /* BencodeDescription.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BencodeDescription.swift; sourceTree = "<group>"; };
 		FC06F393035942BEE4247FD20F8FFCF7 /* Bencode.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Bencode.xcconfig; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				5DED9793FD0F40DB6067DE08FED775DA /* Bencode.swift */,
+				E272E1711F6D7E4700A4AF13 /* BencodeKey.swift */,
 				E272E1511F6B375400A4AF13 /* BencodeSequence.swift */,
 				CC35B24527535478D3634C5E02A66DA0 /* BencodeAccessors.swift */,
 				F0AC758F5C9BA1D326D64CC61AE07D1B /* BencodeDescription.swift */,
@@ -342,6 +345,7 @@
 				D3076519AB0F1D58B606518161E1DF2B /* Bencode.swift in Sources */,
 				A709E342170F13C008280F6FF2225EEB /* BencodeAccessors.swift in Sources */,
 				2D5CACF13F49A0DE9926128D796E112A /* BencodeDescription.swift in Sources */,
+				E272E1721F6D7E4700A4AF13 /* BencodeKey.swift in Sources */,
 				E272E1521F6B375400A4AF13 /* BencodeSequence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
