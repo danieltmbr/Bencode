@@ -27,7 +27,7 @@ extension Bencode: CustomDebugStringConvertible {
             return "\(tabs)[\n\(desc)\n\(tabs)]"
         case .dictionary(let d):
             let desc = d.map {
-                let key = "\(tabs)\t\($0) : "
+                let key = "\(tabs)\t\($0.key) : "
                 let value = $1.desc(tabsCount: count+1)
                 let begin = value.index(value.startIndex, offsetBy: (count+1))
                 return key + String(value.suffix(from: begin))
