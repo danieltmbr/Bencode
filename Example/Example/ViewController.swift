@@ -44,6 +44,10 @@ final class ViewController: NSViewController {
         
         let encodedInfo = info.encoded!
         print(encodedInfo)
+        
+        guard let inf = Bencode(bencodedString: encodedInfo)
+            else { return }
+        print(inf)
     }
 
 }

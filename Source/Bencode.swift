@@ -35,7 +35,7 @@ public extension Bencode {
     var encoded: String {
         switch self {
         case .integer(let i): return "i\(i)e"
-        case .string(let s): return "\(s.count):\(s)e"
+        case .string(let s): return "\(s.count):\(s)"
         case .list(let l):
             let desc = l.map { $0.encoded }.joined()
             return "l\(desc)e"
