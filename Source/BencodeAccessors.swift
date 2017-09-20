@@ -72,6 +72,11 @@ public extension BencodeOptional {
         return bencode?.encoded
     }
     
+    /** Accessing encoded data */
+    var asciiEncoding: Data? {
+        return bencode?.asciiEncoding
+    }
+    
     /** Accessing int value */
     var int: Int? {
         return bencode?.int

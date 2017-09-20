@@ -46,6 +46,11 @@ public extension Bencode {
             return "d\(desc)e"
         }
     }
+    
+    /** Encoding to Bencoded Data */
+    var asciiEncoding: Data {
+        return Data(bytes: encoded.ascii)
+    }
 }
 
 // MARK: - Private decding helpers
@@ -109,5 +114,13 @@ private extension Bencode {
 
     static func suffix(_ s: String, after i: String.Index) -> String {
         return i < s.endIndex ? String(s[s.index(after: i)...]) : ""
+    }
+}
+
+// MARK: - Ascii data from string
+
+private extension String {
+    var ascii: [UInt8] {
+        return unicodeScalars.map { return UInt8($0.value) }
     }
 }

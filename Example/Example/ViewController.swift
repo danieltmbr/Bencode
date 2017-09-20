@@ -40,15 +40,15 @@ final class ViewController: NSViewController {
         fileContentTextView.textStorage?.append(NSAttributedString(string: bencode.debugDescription))
         fileContentTextView.scroll(NSPoint(x: 0, y: 0))
         
-        print("\n======================================\n")
+        print("\n==========================================\n")
         
         let encodedInfo = info.encoded!
         print(encodedInfo)
         
-        guard let inf = Bencode(bencodedString: encodedInfo)
+        print("\n==========================================\n")
+        
+        guard let data = try? Data(contentsOf: url)
             else { return }
-        print(inf)
+        print(data == bencode.asciiEncoding)
     }
-
 }
-
