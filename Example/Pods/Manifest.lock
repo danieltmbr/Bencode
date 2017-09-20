@@ -1,16 +1,16 @@
 PODS:
-  - Bencode (1.0.0)
+  - Bencode (1.2.2)
 
 DEPENDENCIES:
   - Bencode (from `../`)
 
 EXTERNAL SOURCES:
   Bencode:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
-  Bencode: 46edf781e764a6d81b9f472f7a66857de5108f59
+  Bencode: 02760e41cd6d4de30e29ab03f5326d2bd9872545
 
 PODFILE CHECKSUM: a37cedfee38046a95fd006cb37799405d449e104
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1
