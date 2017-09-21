@@ -10,8 +10,9 @@ import Foundation
 /** For ordered encoding. */
 public struct BencodeKey {
     
-    let key: String
-    let order: Int
+    public let key: String
+    
+    public let order: Int
     
     init(_ key: String, order: Int = Int.max) {
         self.key = key
