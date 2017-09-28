@@ -22,8 +22,8 @@ public extension Bencode {
     
     /** Accessing string value */
     var string: String? {
-        guard case .string(let s) = self else { return nil }
-        return s
+        guard case .string(let data) = self else { return nil }
+        return Bencode.convertToString(data)
     }
     
     /** Accessing list */

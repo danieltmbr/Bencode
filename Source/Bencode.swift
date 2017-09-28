@@ -7,11 +7,21 @@
 
 import Foundation
 
+// i = 0x69
+// s = 0x73
+// : = 0x3a
+// 0 = 0x30
+// 9 = 0x39
+// l = 0x6c
+// d = 0x64
+// e = 0x65
+// 5.57562899589539
+
 // MARK: - Bencode
 
 public enum Bencode {
     case integer(Int)
-    case string(String)
+    case string([UInt8])
     indirect case list([Bencode])
     indirect case dictionary([BencodeKey:Bencode])
 }
@@ -20,14 +30,18 @@ public extension Bencode {
     
     /** Decoding from Bencoded string */
     init?(bencodedString str: String) {
-        guard let bencode = Bencode.parse(str)?.bencode else { return nil }
-        self = bencode
+        return nil
+        
+//        guard let bencode = Bencode.parse(str)?.bencode
+//            else { return nil }
+//        self = bencode
     }
     
     /** Decoding bencoded file */
     init?(file url: URL) {
-        guard let str = try? String(contentsOf: url, encoding: .ascii),
-            let bencode = Bencode.parse(str)?.bencode else { return nil }
+        guard let data = try? Data(contentsOf: url),
+            let bencode = Bencode.parse([UInt8](data))?.bencode
+            else { return nil }
         self = bencode
     }
     
@@ -35,13 +49,13 @@ public extension Bencode {
     var encoded: String {
         switch self {
         case .integer(let i): return "i\(i)e"
-        case .string(let s): return "\(s.count):\(s)"
+        case .string(let s): return "\(s.count):\(String(bytes: s, encoding: .ascii)!)"
         case .list(let l):
             let desc = l.map { $0.encoded }.joined()
             return "l\(desc)e"
         case .dictionary(let d):
             let desc = d.sorted(by: { $0.key < $1.key })
-                .map { "\(Bencode.string($0.key).encoded)\($1.encoded)" }
+                .map { "\(Bencode.string($0.key.ascii).encoded)\($1.encoded)" }
                 .joined()
             return "d\(desc)e"
         }
@@ -57,81 +71,94 @@ public extension Bencode {
 
 private extension Bencode {
     
-    typealias ParseResult = (bencode: Bencode, text: String)
+    typealias ParseResult = (bencode: Bencode, index: Int)
 
-    static func parse(_ s: String) -> ParseResult? {
+    static func parse(_ data: [UInt8]) -> ParseResult? {
+        return parse(ArraySlice(data), from: 0)
+    }
+    
+    static private func parse(_ data: ArraySlice<UInt8>, from index: Int) -> ParseResult? {
         
-        guard let c = s.first
+        guard data.count > index + 1
             else { return nil }
         
-        switch c {
-        case "i": return parseInt(s)
-        case "0"..."9": return parseString(s)
-        case "l": return parseList(s)
-        case "d": return parseDictionary(s)
+        let nextIndex = index+1
+        let nextSlice = data[nextIndex...]
+        
+        switch data[index] {
+        case 0x69: return parseInt(nextSlice, from: nextIndex)
+        case 0x30...0x39: return parseString(data, from: index)
+        case 0x6c: return parseList(nextSlice, from: nextIndex)
+        case 0x64: return parseDictionary(nextSlice, from: nextIndex)
         default: return nil
         }
     }
     
-    static func parseInt(_ s: String) -> ParseResult? {
-        let sfx = String(s.suffix(s.count-1))
-        
-        guard let end = sfx.index(of: "e"),
-            let num = Int(sfx[..<end])
+    static func parseInt(_ data: ArraySlice<UInt8>, from index: Int) -> ParseResult? {
+        guard let end = data.index(of: 0x65)
             else { return nil }
         
-        return (bencode: .integer(num), text: suffix(sfx, after: end))
+        let num = Bencode.convertToInt(Array(data[..<end]))
+        return (bencode: .integer(num), index: end+1)
     }
     
-    static func parseString(_ s: String) -> ParseResult? {
-        guard let sep = s.index(of: ":"),
-            let len = Int(s[..<sep])
+    static func parseString(_ data: ArraySlice<UInt8>, from index: Int) -> ParseResult? {
+        guard let sep = data.index(of: 0x3a)
             else { return nil }
         
-        let end = s.index(sep, offsetBy: len)
-        let content = String(s[s.index(after: sep)...end])
-        return (bencode: .string(content), text: suffix(s, after: end))
+        let len = Bencode.convertToInt(Array(data[..<sep]))
+        let start = sep + 1
+        let end = data.index(start, offsetBy: len)
+        
+        return (bencode: .string(Array(data[start..<end])), index: end)
     }
     
-    static func parseList(_ s: String) -> ParseResult? {
+    static func parseList(_ data: ArraySlice<UInt8>, from index: Int) -> ParseResult? {
         var l: [Bencode] = []
-        var sfx = String(s.suffix(s.count-1))
+        var idx: Int = index
         
-        while sfx.first != "e" {
-            guard let result = parse(String(sfx))
+        while data[idx] != 0x65 {
+            guard let result = parse(data[idx...], from: idx)
                 else { return nil }
-            
             l.append(result.bencode)
-            sfx = result.text
+            idx = result.index
         }
         
-        return (bencode: .list(l), text: String(sfx.suffix(sfx.count-1)))
+        return (bencode: .list(l), index: idx+1)
     }
     
-    static func parseDictionary(_ s: String) -> ParseResult? {
+    static func parseDictionary(_ data: ArraySlice<UInt8>, from index: Int) -> ParseResult? {
         var d: [BencodeKey:Bencode] = [:]
-        var sfx = String(s.suffix(s.count-1))
+        var idx: Int = index
         var order = 0
         
-        while sfx.first != "e" {
-            guard let keyResult = parseString(sfx),
-                case .string(let key) = keyResult.bencode,
-                let valueResult = parse(keyResult.text)
+        while data[idx] != 0x65 {
+            guard let keyResult = parseString(data[idx...], from: idx),
+                case .string(let keyData) = keyResult.bencode,
+                let valueResult = parse(data[keyResult.index...], from: keyResult.index)
                 else { return nil }
             
+            let key = convertToString(keyData)
             d[BencodeKey(key, order: order)] = valueResult.bencode
-            sfx = valueResult.text
+            idx = valueResult.index
             order += 1
         }
-        return (bencode: .dictionary(d), text: String(sfx.suffix(sfx.count-1)))
-    }
-
-    static func suffix(_ s: String, after i: String.Index) -> String {
-        return i < s.endIndex ? String(s[s.index(after: i)...]) : ""
+        return (bencode: .dictionary(d), index: idx+1)
     }
 }
 
-// MARK: - Ascii data from string
+// MARK: - Ascii coding
+
+internal extension Bencode {
+    
+    static func convertToInt(_ ascii: [UInt8]) -> Int {
+        return Int(String(bytes: ascii, encoding: .ascii)!)!
+    }
+    
+    static func convertToString(_ data: [UInt8]) -> String {
+        return String(bytes: data, encoding: .ascii)!
+    }
+}
 
 private extension String {
     var ascii: [UInt8] {
