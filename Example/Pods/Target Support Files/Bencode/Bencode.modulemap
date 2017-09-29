@@ -1,6 +1,0 @@
-framework module Bencode {
-  umbrella header "Bencode-umbrella.h"
-
-  export *
-  module * { export * }
-}
