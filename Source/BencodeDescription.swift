@@ -21,7 +21,7 @@ extension Bencode: CustomDebugStringConvertible {
         
         switch self {
         case .integer(let i): return "\(tabs)\(i)"
-        case .string(let data): return tabs+Bencode.convertToString(data)
+        case .string(let data): return tabs + (data.string ?? "Can't parse to string")
         case .list(let l):
             let desc = l.map { $0.desc(tabsCount: count+1) }.joined(separator: ",\n")
             return "\(tabs)[\n\(desc)\n\(tabs)]"

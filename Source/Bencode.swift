@@ -7,16 +7,6 @@
 
 import Foundation
 
-// i = 0x69
-// s = 0x73
-// : = 0x3a
-// 0 = 0x30
-// 9 = 0x39
-// l = 0x6c
-// d = 0x64
-// e = 0x65
-// 5.57562899589539
-
 // MARK: - Bencode
 
 public enum Bencode {
@@ -30,17 +20,19 @@ public extension Bencode {
     
     /** Decoding from Bencoded string */
     init?(bencodedString str: String) {
-        return nil
-        
-//        guard let bencode = Bencode.parse(str)?.bencode
-//            else { return nil }
-//        self = bencode
+        self.init(bytes: str.ascii)
     }
     
     /** Decoding bencoded file */
     init?(file url: URL) {
-        guard let data = try? Data(contentsOf: url),
-            let bencode = Bencode.parse([UInt8](data))?.bencode
+        guard let data = try? Data(contentsOf: url)
+            else { return nil }
+        self.init(bytes: [UInt8](data))
+    }
+    
+    /** Decoding from bytes */
+    init?(bytes: [UInt8]) {
+        guard let bencode = Bencode.parse(bytes)?.bencode
             else { return nil }
         self = bencode
     }
@@ -49,7 +41,7 @@ public extension Bencode {
     var encoded: String {
         switch self {
         case .integer(let i): return "i\(i)e"
-        case .string(let s): return "\(s.count):\(String(bytes: s, encoding: .ascii)!)"
+        case .string(let b): return "\(b.count):\(String(bytes: b, encoding: .ascii)!)"
         case .list(let l):
             let desc = l.map { $0.encoded }.joined()
             return "l\(desc)e"
@@ -71,6 +63,17 @@ public extension Bencode {
 
 private extension Bencode {
     
+    private struct Tokens {
+        static let i: UInt8 = 0x69
+        static let l: UInt8 = 0x6c
+        static let d: UInt8 = 0x64
+        static let e: UInt8 = 0x65
+        static let zero: UInt8 = 0x30
+        static let nine: UInt8 = 0x39
+        static let colon: UInt8 = 0x3a
+        static let hyphen: UInt8 = 0x2d
+    }
+    
     typealias ParseResult = (bencode: Bencode, index: Int)
 
     static func parse(_ data: [UInt8]) -> ParseResult? {
@@ -86,27 +89,26 @@ private extension Bencode {
         let nextSlice = data[nextIndex...]
         
         switch data[index] {
-        case 0x69: return parseInt(nextSlice, from: nextIndex)
-        case 0x30...0x39: return parseString(data, from: index)
-        case 0x6c: return parseList(nextSlice, from: nextIndex)
-        case 0x64: return parseDictionary(nextSlice, from: nextIndex)
+        case Tokens.i: return parseInt(nextSlice, from: nextIndex)
+        case Tokens.zero...Tokens.nine: return parseString(data, from: index)
+        case Tokens.l: return parseList(nextSlice, from: nextIndex)
+        case Tokens.d: return parseDictionary(nextSlice, from: nextIndex)
         default: return nil
         }
     }
     
     static func parseInt(_ data: ArraySlice<UInt8>, from index: Int) -> ParseResult? {
-        guard let end = data.index(of: 0x65)
+        guard let end = data.index(of: Tokens.e),
+            let num = Array(data[..<end]).int
             else { return nil }
-        
-        let num = Bencode.convertToInt(Array(data[..<end]))
         return (bencode: .integer(num), index: end+1)
     }
     
     static func parseString(_ data: ArraySlice<UInt8>, from index: Int) -> ParseResult? {
-        guard let sep = data.index(of: 0x3a)
+        guard let sep = data.index(of: Tokens.colon),
+            let len = Array(data[..<sep]).int
             else { return nil }
         
-        let len = Bencode.convertToInt(Array(data[..<sep]))
         let start = sep + 1
         let end = data.index(start, offsetBy: len)
         
@@ -117,7 +119,7 @@ private extension Bencode {
         var l: [Bencode] = []
         var idx: Int = index
         
-        while data[idx] != 0x65 {
+        while data[idx] != Tokens.e {
             guard let result = parse(data[idx...], from: idx)
                 else { return nil }
             l.append(result.bencode)
@@ -132,36 +134,17 @@ private extension Bencode {
         var idx: Int = index
         var order = 0
         
-        while data[idx] != 0x65 {
+        while data[idx] != Tokens.e {
             guard let keyResult = parseString(data[idx...], from: idx),
                 case .string(let keyData) = keyResult.bencode,
+                let key = keyData.string,
                 let valueResult = parse(data[keyResult.index...], from: keyResult.index)
                 else { return nil }
-            
-            let key = convertToString(keyData)
+
             d[BencodeKey(key, order: order)] = valueResult.bencode
             idx = valueResult.index
             order += 1
         }
         return (bencode: .dictionary(d), index: idx+1)
-    }
-}
-
-// MARK: - Ascii coding
-
-internal extension Bencode {
-    
-    static func convertToInt(_ ascii: [UInt8]) -> Int {
-        return Int(String(bytes: ascii, encoding: .ascii)!)!
-    }
-    
-    static func convertToString(_ data: [UInt8]) -> String {
-        return String(bytes: data, encoding: .ascii)!
-    }
-}
-
-private extension String {
-    var ascii: [UInt8] {
-        return unicodeScalars.map { return UInt8($0.value) }
     }
 }
