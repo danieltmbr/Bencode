@@ -12,7 +12,7 @@ import Bencode
 final class ViewController: NSViewController {
     
     // MARK: - IBOutlets
-
+    
     @IBOutlet weak private var fileNameLabel: NSTextFieldCell!
     
     @IBOutlet weak private var fileLengthLabel: NSTextFieldCell!
@@ -23,14 +23,15 @@ final class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         guard let url = Bundle.main.url(forResource: "Entourage.S01", withExtension: "torrent"),
-            let bencode = Bencode(file: url) else { return }
+            let bencode = Bencode(file: url)
+            else { return }
         
         let info = bencode["info"]
         let files = info["files"]
-
+        
         files.values.forEach {
             print($0["path"][0].string!)
         }
@@ -42,7 +43,7 @@ final class ViewController: NSViewController {
         
         print("\n==========================================\n")
         
-        let encodedInfo = info.encoded!
+        let encodedInfo = info.encoded
         print(encodedInfo)
         
         print("\n==========================================\n")
@@ -50,5 +51,12 @@ final class ViewController: NSViewController {
         guard let data = try? Data(contentsOf: url)
             else { return }
         print(data == bencode.asciiEncoding)
+    }
+    
+    private func measure(closure: (()->Void)) {
+        let start = Date()
+        closure()
+        let interval = Date().timeIntervalSince(start)
+        print(interval)
     }
 }

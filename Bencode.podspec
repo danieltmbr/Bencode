@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Bencode'
-  s.version          = '1.3.1'
+  s.version          = '1.4.0'
   s.summary          = 'Pure swift Bencode decoder & encoder'
 
   s.description      = <<-DESC

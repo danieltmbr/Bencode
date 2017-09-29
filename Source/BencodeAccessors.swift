@@ -22,8 +22,8 @@ public extension Bencode {
     
     /** Accessing string value */
     var string: String? {
-        guard case .string(let s) = self else { return nil }
-        return s
+        guard case .string(let bytes) = self else { return nil }
+        return bytes.string
     }
     
     /** Accessing list */
@@ -36,6 +36,12 @@ public extension Bencode {
     var dict: [BencodeKey: Bencode]? {
         guard case .dictionary(let d) = self else { return nil }
         return d
+    }
+    
+    /** Accessing bytes */
+    var bytes: [UInt8]? {
+        guard case .string(let bytes) = self else { return nil }
+        return bytes
     }
     
     /** returns all items if bencode is a list or dictionary
@@ -95,6 +101,11 @@ public extension BencodeOptional {
     /** Accessing dictionary */
     var dict: [BencodeKey: Bencode]? {
         return bencode?.dict
+    }
+    
+    /** Accessing bytes */
+    var bytes: [UInt8]? {
+        return bencode?.bytes
     }
     
     /** Returns all items if bencode is a list or dictionary
