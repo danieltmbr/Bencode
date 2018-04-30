@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - [UInt8] Extension
 
-internal typealias Byte = (UInt8)
+internal typealias Byte = UInt8
 
 internal extension Sequence where Iterator.Element == Byte {
     
@@ -28,7 +28,7 @@ internal extension Sequence where Iterator.Element == Byte {
 
 internal extension String {
     
-    var ascii: [UInt8] {
-        return unicodeScalars.map { return UInt8($0.value) }
+    var ascii: [Byte] {
+        return unicodeScalars.map { return Byte($0.value) }
     }
 }
