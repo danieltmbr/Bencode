@@ -25,7 +25,7 @@ final class ViewController: NSViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        guard let url = Bundle.main.url(forResource: "Entourage.S01", withExtension: "torrent"),
+        guard let url = Bundle.main.url(forResource: "2bytes", withExtension: "torrent"),
             let bencode = Bencode(file: url)
             else { return }
         
@@ -40,11 +40,6 @@ final class ViewController: NSViewController {
         fileLengthLabel.title = "\(bencode["info"]["files"][1]["length"].int!)"
         fileContentTextView.textStorage?.append(NSAttributedString(string: bencode.debugDescription))
         fileContentTextView.scroll(NSPoint(x: 0, y: 0))
-        
-        print("\n==========================================\n")
-        
-        let encodedInfo = info.encoded
-        print(encodedInfo)
         
         print("\n==========================================\n")
         

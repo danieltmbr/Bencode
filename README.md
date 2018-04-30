@@ -29,6 +29,16 @@ let bencode: Bencode? = Bencode(file: torrentUrl)
 let bencode: Bencode? = Bencode(bencodedString: content)
 ```
 
+**Would you like to know more of the parsing failures, use the decoder:**
+
+```swift
+do {
+    let bencode = Bencoder().decode(from: fileURL)
+} catch let error {
+    print(error)
+}
+```
+
 **Accessing properties:**
 
 Accessing properties is very handy with subscripts & accessors.
