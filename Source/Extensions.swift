@@ -20,7 +20,7 @@ internal extension Sequence where Iterator.Element == Byte {
     }
     
     var string: String? {
-        return String(bytes: self, encoding: .ascii)
+        return String(bytes: self, encoding: .utf8)
     }
 }
 
