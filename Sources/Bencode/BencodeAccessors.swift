@@ -8,6 +8,7 @@
 import Foundation
 
 public enum BencodeOptional {
+    
     case none
     case bencode(Bencode)
 }

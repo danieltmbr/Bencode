@@ -14,7 +14,7 @@ public struct BencodeKey {
     
     public let order: Int
     
-    init(_ key: String, order: Int = Int.max) {
+    public init(_ key: String, order: Int = Int.max) {
         self.key = key
         self.order = order
     }

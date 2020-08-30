@@ -26,23 +26,23 @@ final public class Bencoder {
     // MARK: - Methods
 
     /** Decoding from Bencoded string */
-    func decode(bencodedString str: String) throws -> Bencode {
+    public func decode(bencodedString str: String) throws -> Bencode {
         return try decode(bytes: str.ascii)
     }
 
     /** Decoding bencoded file */
-    func decode(file url: URL) throws -> Bencode {
+    public func decode(file url: URL) throws -> Bencode {
         let data = try Data(contentsOf: url)
         return try decode(bytes: [Byte](data))
     }
 
     /** Decoding from bytes */
-    func decode(bytes: [UInt8]) throws -> Bencode {
+    public func decode(bytes: [UInt8]) throws -> Bencode {
         return try parse(bytes).bencode
     }
 
     /** Encoding to Bencode string */
-    func encoded(bencode: Bencode) -> String {
+    public func encoded(bencode: Bencode) -> String {
         switch bencode {
         case .integer(let i): return "i\(i)e"
         case .string(let b): return "\(b.count):\(String(bytes: b, encoding: .ascii)!)"
@@ -58,7 +58,7 @@ final public class Bencoder {
     }
 
     /** Encoding to Bencoded Data */
-    func asciiEncoding(bencode: Bencode) -> Data {
+    public func asciiEncoding(bencode: Bencode) -> Data {
         return Data(encoded(bencode: bencode).ascii)
     }
 }

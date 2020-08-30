@@ -8,6 +8,7 @@
 import Foundation
 
 public enum BencoderError: Error {
+    
     case unknownToken(UInt8)
     case tokenNotFound(UInt8)
     case unexpectedKey(Bencode)
