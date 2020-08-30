@@ -24,6 +24,8 @@ final public class Bencoder {
     private let tokens = Tokens()
 
     // MARK: - Methods
+    
+    public init() {}
 
     /** Decoding from Bencoded string */
     public func decode(bencodedString str: String) throws -> Bencode {
