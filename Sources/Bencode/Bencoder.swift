@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Bencoder {
+final public class Bencoder {
 
     // MARK: - Constants
 
