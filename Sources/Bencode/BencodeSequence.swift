@@ -15,12 +15,12 @@ public struct BencodeIterator: IteratorProtocol {
     private let sortedKeys: [BencodeKey]
     private var index: Int = 0
     
-    init(bencodeOptional: BencodeOptional) {
+    public init(bencodeOptional: BencodeOptional) {
         self.bencodeOptional = bencodeOptional
         sortedKeys = bencodeOptional.bencode?.dict?.keys.sorted() ?? []
     }
     
-    init(bencode: Bencode) {
+    public init(bencode: Bencode) {
         self.init(bencodeOptional: .bencode(bencode))
     }
     

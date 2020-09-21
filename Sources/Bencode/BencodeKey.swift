@@ -14,17 +14,13 @@ public struct BencodeKey {
     
     public let order: Int
     
-    init(_ key: String, order: Int = Int.max) {
+    public init(_ key: String, order: Int = Int.max) {
         self.key = key
         self.order = order
     }
 }
 
 extension BencodeKey: Hashable {
-    
-    public var hashValue: Int {
-        return key.hashValue
-    }
     
     public static func ==(lhs: BencodeKey, rhs: BencodeKey) -> Bool {
         return lhs.key == rhs.key

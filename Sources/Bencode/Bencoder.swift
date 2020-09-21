@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Bencoder {
+final public class Bencoder {
 
     // MARK: - Constants
 
@@ -24,25 +24,27 @@ final class Bencoder {
     private let tokens = Tokens()
 
     // MARK: - Methods
+    
+    public init() {}
 
     /** Decoding from Bencoded string */
-    func decode(bencodedString str: String) throws -> Bencode {
+    public func decode(bencodedString str: String) throws -> Bencode {
         return try decode(bytes: str.ascii)
     }
 
     /** Decoding bencoded file */
-    func decode(file url: URL) throws -> Bencode {
+    public func decode(file url: URL) throws -> Bencode {
         let data = try Data(contentsOf: url)
         return try decode(bytes: [Byte](data))
     }
 
     /** Decoding from bytes */
-    func decode(bytes: [UInt8]) throws -> Bencode {
+    public func decode(bytes: [UInt8]) throws -> Bencode {
         return try parse(bytes).bencode
     }
 
     /** Encoding to Bencode string */
-    func encoded(bencode: Bencode) -> String {
+    public func encoded(bencode: Bencode) -> String {
         switch bencode {
         case .integer(let i): return "i\(i)e"
         case .string(let b): return "\(b.count):\(String(bytes: b, encoding: .ascii)!)"
@@ -58,8 +60,8 @@ final class Bencoder {
     }
 
     /** Encoding to Bencoded Data */
-    func asciiEncoding(bencode: Bencode) -> Data {
-        return Data(bytes: encoded(bencode: bencode).ascii)
+    public func asciiEncoding(bencode: Bencode) -> Data {
+        return Data(encoded(bencode: bencode).ascii)
     }
 }
 
@@ -90,7 +92,7 @@ private extension Bencoder {
     }
 
     func parseInt(_ data: ArraySlice<Byte>, from index: Int) throws -> ParseResult {
-        guard let end = data.index(of: tokens.e)
+        guard let end = data.firstIndex(of: tokens.e)
             else { throw BencoderError.tokenNotFound(tokens.e) }
         guard let num = Array(data[..<end]).int
             else { throw BencoderError.invalidNumber }
@@ -98,7 +100,7 @@ private extension Bencoder {
     }
 
     func parseString(_ data: ArraySlice<Byte>, from index: Int) throws -> ParseResult {
-        guard let sep = data.index(of: tokens.colon)
+        guard let sep = data.firstIndex(of: tokens.colon)
             else { throw BencoderError.tokenNotFound(tokens.colon) }
         guard let len = Array(data[..<sep]).int
             else { throw BencoderError.invalidNumber }

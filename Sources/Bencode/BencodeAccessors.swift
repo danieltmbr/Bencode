@@ -8,6 +8,7 @@
 import Foundation
 
 public enum BencodeOptional {
+    
     case none
     case bencode(Bencode)
 }
@@ -46,7 +47,7 @@ public extension Bencode {
     
     /** returns all items if bencode is a list or dictionary
      none if its a string or integer */
-    public var values: [Bencode] {
+    var values: [Bencode] {
         return self.map { $0.value }
     }
     
@@ -110,7 +111,7 @@ public extension BencodeOptional {
     
     /** Returns all items if bencode is a list or dictionary
      none if its a string or integer */
-    public var values: [Bencode] {
+    var values: [Bencode] {
         return self.map { $0.value }
     }
     

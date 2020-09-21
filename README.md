@@ -1,12 +1,18 @@
 # Bencode
 
-Bencode is a general purpose bencode encoder & decoder written in swift 4.
+Bencode is a general purpose bencode encoder & decoder written in Swift 5.
 
 Inspired by [VFK SwiftyBencode][vfk] & [arvidsigvardsson/Bencode][abc]
 
 ## Installation
 
 **⚠️ Xcode 9 is required ⚠️**
+
+### Swift Package Manager
+
+Just add a new package on your project, and point to this repository.
+
+### CocoaPods
 
 Bencode is available through [CocoaPods](http://cocoapods.org).
 To install it, simply add the following line to your Podfile:
