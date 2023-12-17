@@ -26,6 +26,9 @@ extension BencodeKey: Hashable {
         return lhs.key == rhs.key
     }
     
+    public func hash(into hasher: inout Hasher {
+        hasher.combine(self.key)
+    }
 }
 
 extension BencodeKey: Comparable {
